@@ -109,8 +109,14 @@ bool DCC::check_address(int size) {
   return (buffer == this->address);
 }
 
-bool DCC::check_sum() {
-
+bool DCC::check_sum(int data_readed) {
+	if (data_readed < 2)
+		return (false);
+	char buffer = data[0];
+	for (int cursor = 0; cursor < data_readed - 2; ++cursor) {
+		buffer ^= data[cursor + 1];
+	}
+	return (buffer == data[data_readed - 1]);
 }
 
 void DCC::set_data(char value, int index) {
