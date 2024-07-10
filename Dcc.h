@@ -24,27 +24,36 @@
 
 #define PREAMBLE_MAX 24
 
+#define TYPE_MASK 0b11000000
+
+#define ACCESSORY_CODE 0b10000000
+#define LOCOMOTIVE_CODE_7 0b00000000
+#define LOCOMOTIVE_CODE_14 0b11000000
+
 typedef unsigned long int t_time;
 
 class DCC {
 protected:
     int type;
     int pin_to_read;
+    int address;
     char data[6];
 public:
     int read();
     void reset();
     char get_data(int index);
+    bool check_address();
+    bool chekc_sum();
     DCC();
     virtual ~DCC() = 0;
 };
 
 class accessory : public DCC {
 public:
-    accessory(int pin_to_read);
+    accessory(int pin_to_read, int address);
 };
 
 class locomotive : public DCC {
 public:
-    locomotive(int pin_to_read);
+    locomotive(int pin_to_read, int address);
 };
