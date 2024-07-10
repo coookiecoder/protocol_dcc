@@ -27,16 +27,17 @@ void loop(void) {
       Serial.println("error");
   }
   else if (INFO) {
-    for (int data_readed = 0; data_readed < return_code; data_readed++) {
-      for (int bit = 0; bit < 8; bit++) {
-        if (test.get_data(data_readed) & 1 << 7 - bit)
-          Serial.print("1");
-        else
-          Serial.print("0");
-      }
-      Serial.print("\n");
-    }
-    Serial.print("\n");
+    switch (return_code) {
+		case ACCESSORY_CODE:
+			Serial.println("accessory detected");
+			break;
+		case LOCOMOTIVE_CODE_7:
+			Serial.println("locomotive 7 bits detected");
+			break;
+		case LOCOMOTIVE_CODE_14:
+			Serial.println("locomotive 14 bits detected");
+			break;
+	}
   }
 
   test.reset();
