@@ -43,7 +43,7 @@ int DCC::read() {
   
   do {
     for (int bit = 0; bit < 8; bit++) {
-      data[data_readed] |= read_pin(this->pin_to_read) << 7 - bit;
+      data[data_readed] |= read_pin(this->pin_to_read) << (7 - bit);
     }
 
     data_readed++;
@@ -52,11 +52,11 @@ int DCC::read() {
   if (data_readed == 6 && read_pin(this->pin_to_read) == 0)
     return (ERROR_READ);
   
-  if (data[0] & TYPE_MASK == ACCESSORY_CODE && check_address(ACCESSORY_TYPE) && check_sum() && type == ACCESSORY_TYPE)
+  if ((data[0] & TYPE_MASK) == ACCESSORY_CODE && check_address(ACCESSORY_TYPE) && check_sum() && type == ACCESSORY_TYPE)
     return (ACCESSORY_CODE);
-  else if (data[0] & TYPE_MASK == LOCOMOTIVE_CODE_7 && check_address(7) && check_sum() && type == LOCOMOTIVE_TYPE)
+  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_7 && check_address(7) && check_sum() && type == LOCOMOTIVE_TYPE)
     return (LOCOMOTIVE_CODE_7);
-  else if (data[0] & TYPE_MASK == LOCOMOTIVE_CODE_14 && check_address(14) && check_sum() && type == LOCOMOTIVE_TYPE)
+  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_14 && check_address(14) && check_sum() && type == LOCOMOTIVE_TYPE)
     return (LOCOMOTIVE_CODE_14);
   return (ERROR);
 }
@@ -75,27 +75,46 @@ char DCC::get_data(int index) {
 }
 
 bool DCC::check_address(int size) {
-  int buffer = 0;
+  short buffer = 0;
 
-  if (size == ACCESSORY_TYPE && data[1] >> 7 == 1) {
-      for (int cursor = 0; cursor < 6; cursor++) {
-        buffer += get_binary(data[0], 7 - cursor) * (2 ** (cursor - 1));
-      }
-
-      for (int cursor = 0; cursor < 3; cursor++) {
-        buffer |= data[1] >> 7 - cursor;
-      }
+  if (size == ACCESSORY_TYPE && (data[1] & 0b10000000) == 128) {
+	  for (int cursor = 0; cursor < 6; cursor++) {
+		  buffer |= get_binary(data[0], cursor) << cursor;
+	  }
+	  for (int cursor = 0; cursor < 3; cursor++) {
+		  buffer |= get_binary(data[1], 6 - cursor) << (cursor + 5);
+	  }
   } else if (size == ACCESSORY_TYPE) {
-
+	  for (int cursor = 0; cursor < 6; cursor++) {
+		  buffer |= get_binary(data[0], cursor) << (cursor + 2);
+	  }
+	  for (int cursor = 0; cursor < 3; cursor++) {
+		  buffer |= get_binary(data[1], 6 - cursor) << (cursor + 7);
+	  }
+	  buffer |= get_binary(data[1], 1) << 0;
+	  buffer |= get_binary(data[1], 2) << 1;
   } else if (size == 7) {
-
+	  for (int cursor = 0; cursor < 7; cursor++) {
+		  buffer |= get_binary(data[0], cursor) << cursor;
+	  }
   } else if (size == 14) {
-
+	  for (int cursor = 0; cursor < 6; cursor++) {
+		  buffer |= get_binary(data[0], cursor) << cursor;
+	  }
+	  for (int cursor = 0; cursor < 8; cursor++) {
+		  buffer |= get_binary(data[1], 7 - cursor) << (cursor + 8);
+	  }
   }
+
+  return (buffer == this->address);
 }
 
-bool DCC::chekc_sum() {
+bool DCC::check_sum() {
 
+}
+
+void DCC::set_data(char value, int index) {
+	this->data[index] = value;
 }
 
 accessory::accessory(int pin_to_read, int address) {

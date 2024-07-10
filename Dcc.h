@@ -43,7 +43,8 @@ public:
     void reset();
     char get_data(int index);
     bool check_address();
-    bool chekc_sum();
+    bool check_sum();
+	void set_data(char value ,  int index);
     DCC();
     virtual ~DCC() = 0;
 };
