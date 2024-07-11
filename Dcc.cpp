@@ -52,11 +52,11 @@ int DCC::read() {
   if (data_readed == 6 && read_pin(this->pin_to_read) == 0)
     return (ERROR_READ);
   
-  if ((data[0] & TYPE_MASK) == ACCESSORY_CODE && check_address(ACCESSORY_TYPE) && check_sum() && type == ACCESSORY_TYPE)
+  if ((data[0] & TYPE_MASK) == ACCESSORY_CODE && check_address(ACCESSORY_TYPE) && check_sum(data_readed) && type == ACCESSORY_TYPE)
     return (ACCESSORY_CODE);
-  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_7 && check_address(7) && check_sum() && type == LOCOMOTIVE_TYPE)
+  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_7 && check_address(7) && check_sum(data_readed) && type == LOCOMOTIVE_TYPE)
     return (LOCOMOTIVE_CODE_7);
-  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_14 && check_address(14) && check_sum() && type == LOCOMOTIVE_TYPE)
+  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_14 && check_address(14) && check_sum(data_readed) && type == LOCOMOTIVE_TYPE)
     return (LOCOMOTIVE_CODE_14);
   return (ERROR);
 }
