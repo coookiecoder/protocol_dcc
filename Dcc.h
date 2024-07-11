@@ -42,8 +42,8 @@ public:
     int read();
     void reset();
     char get_data(int index);
-    bool check_address();
-    bool check_sum();
+    bool check_address(int size);
+    bool check_sum(int data_readed);
 	void set_data(char value ,  int index);
     DCC();
     virtual ~DCC() = 0;
