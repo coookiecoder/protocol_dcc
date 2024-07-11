@@ -15,7 +15,7 @@ void setup(void) {
 
 void loop(void) {
   int return_code;
-  accessory test(test_pin);
+  accessory test(test_pin, 3);
   return_code = test.read();
 
   if (return_code == PREAMBLE_SHORT) {
@@ -37,7 +37,7 @@ void loop(void) {
 		case LOCOMOTIVE_CODE_14:
 			Serial.println("locomotive 14 bits detected");
 			break;
-	}
+	  }
   }
 
   test.reset();
