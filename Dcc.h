@@ -80,5 +80,5 @@ public:
 #define LOCOMOTIVE_7_28_V4 data[1],3
 #define LOCOMOTIVE_7_28_V3 data[1],2
 #define LOCOMOTIVE_7_28_V2 data[1],1
-#define LOCOMOTIVE_7_28_V1 data[1]
+#define LOCOMOTIVE_7_28_V1 data[1],0
   	
