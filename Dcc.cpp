@@ -14,7 +14,6 @@ bool read_pin(int pin) {
   return (delta < 83);
 }
 
-static
 bool get_binary(char byte, int index) {
   return (byte >> index & 1);
 }
@@ -74,6 +73,10 @@ char DCC::get_data(int index) {
   return this->data[index];
 }
 
+char* DCC::get_raw_data() {
+  return this->data;
+}
+
 bool DCC::check_address(int size) {
   short buffer = 0;
 
@@ -113,7 +116,7 @@ bool DCC::check_sum(int data_readed) {
 	if (data_readed < 2)
 		return (false);
 	char buffer = data[0];
-	for (int cursor = 0; cursor < data_readed - 2; ++cursor) {
+	for (int cursor = 0; cursor < data_readed - 2; cursor++) {
 		buffer ^= data[cursor + 1];
 	}
 	return (buffer == data[data_readed - 1]);
