@@ -31,7 +31,7 @@ void loop(void) {
     if (WARNING)
       Serial.println("warning preamble to short");
   }
-  else if (return_code == ERROR) {
+  else if (return_code == ERROR_READ) {
     if (ERROR)
       Serial.println("error");
   }
