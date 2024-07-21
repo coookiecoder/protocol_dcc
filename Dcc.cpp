@@ -32,6 +32,8 @@ int DCC::read() {
   while (read_pin(this->pin_to_read) != 0 && preamble < PREAMBLE_MAX) // starting bit verification
     preamble++;
 
+  this->preamble = preamble;
+
   if (preamble > 24)
     return (ERROR_READ);
 
@@ -50,12 +52,15 @@ int DCC::read() {
 
   if (data_readed == 6 && read_pin(this->pin_to_read) == 0)
     return (ERROR_READ);
+
+  if (!check_sum(data_readed))
+    return (ERROR_READ);
   
-  if ((data[0] & TYPE_MASK) == ACCESSORY_CODE && check_address(ACCESSORY_TYPE) && check_sum(data_readed) && type == ACCESSORY_TYPE)
+  if ((data[0] & TYPE_MASK) == ACCESSORY_CODE && check_address(ACCESSORY_TYPE) && type == ACCESSORY_TYPE)
     return (ACCESSORY_CODE);
-  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_7 && check_address(7) && check_sum(data_readed) && type == LOCOMOTIVE_TYPE)
+  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_7 && check_address(7) && type == LOCOMOTIVE_TYPE)
     return (LOCOMOTIVE_CODE_7);
-  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_14 && check_address(14) && check_sum(data_readed) && type == LOCOMOTIVE_TYPE)
+  else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_14 && check_address(14) && type == LOCOMOTIVE_TYPE)
     return (LOCOMOTIVE_CODE_14);
   return (ERROR);
 }
@@ -124,6 +129,10 @@ bool DCC::check_sum(int data_readed) {
 
 void DCC::set_data(char value, int index) {
 	this->data[index] = value;
+}
+
+int DCC::get_preamble(void) {
+  return (this->preamble);
 }
 
 accessory::accessory(int pin_to_read, int address) {

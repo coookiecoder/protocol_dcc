@@ -36,6 +36,7 @@ bool get_binary(char byte, int index);
 
 class DCC {
 protected:
+    int preamble;
     int type;
     int pin_to_read;
     int address;
@@ -48,6 +49,7 @@ public:
     bool check_address(int size);
     bool check_sum(int data_readed);
 	  void set_data(char value, int index);
+    int get_preamble(void);
     DCC();
     virtual ~DCC() = 0;
 };
