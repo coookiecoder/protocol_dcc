@@ -11,7 +11,7 @@ bool read_pin(int pin) {
   while (digitalRead(pin) == 1)
     delta = micros() - ref;
 
-  return (delta < 83);
+  return (delta < 100);
 }
 
 bool get_binary(char byte, int index) {
@@ -53,8 +53,10 @@ int DCC::read() {
   if (data_readed == 6 && read_pin(this->pin_to_read) == 0)
     return (ERROR_READ);
 
+  this->data_readed = data_readed;
+
   if (!check_sum(data_readed))
-    return (ERROR_READ);
+    return (ERROR_CHECKSUM);
   
   if ((data[0] & TYPE_MASK) == ACCESSORY_CODE && check_address(ACCESSORY_TYPE) && type == ACCESSORY_TYPE)
     return (ACCESSORY_CODE);
@@ -66,6 +68,7 @@ int DCC::read() {
 }
 
 void DCC::reset() {
+  this->data_readed = 0;
   this->data[0] = 0;
   this->data[1] = 0;
   this->data[2] = 0;
@@ -121,8 +124,8 @@ bool DCC::check_sum(int data_readed) {
 	if (data_readed < 2)
 		return (false);
 	char buffer = data[0];
-	for (int cursor = 0; cursor < data_readed - 2; cursor++) {
-		buffer ^= data[cursor + 1];
+	for (int cursor = 1; cursor < data_readed - 1; cursor++) {
+		buffer ^= data[cursor];
 	}
 	return (buffer == data[data_readed - 1]);
 }
@@ -133,6 +136,10 @@ void DCC::set_data(char value, int index) {
 
 int DCC::get_preamble(void) {
   return (this->preamble);
+}
+
+int DCC::get_data_read() {
+  return (this->data_readed);
 }
 
 accessory::accessory(int pin_to_read, int address) {

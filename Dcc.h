@@ -21,6 +21,7 @@
 
 #define ERROR_READ 255
 #define PREAMBLE_SHORT 254
+#define ERROR_CHECKSUM 253
 
 #define PREAMBLE_MAX 24
 
@@ -40,6 +41,7 @@ protected:
     int type;
     int pin_to_read;
     int address;
+    int data_readed;
     char data[6];
 public:
     int read(void);
@@ -50,6 +52,7 @@ public:
     bool check_sum(int data_readed);
 	  void set_data(char value, int index);
     int get_preamble(void);
+    int get_data_read(void);
     DCC();
     virtual ~DCC() = 0;
 };
