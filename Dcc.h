@@ -65,9 +65,9 @@ public:
 class locomotive : public DCC {
 public:
     locomotive(int pin_to_read, int address);
-    int get_type(void);
 };
 
+/* locomitive 7 bit*/
 
 #define LOCOMOTIVE_7_28_TYPE0 data[0],7
 #define LOCOMOTIVE_7_28_A6 data[0],6
@@ -86,4 +86,33 @@ public:
 #define LOCOMOTIVE_7_28_V3 data[1],2
 #define LOCOMOTIVE_7_28_V2 data[1],1
 #define LOCOMOTIVE_7_28_V1 data[1],0
+
+/* locomitive 14 bit*/
+
+#define LOCOMOTIVE_14_28_TYPE1 data[0],7
+#define LOCOMOTIVE_14_28_TYPE0 data[0],6
+#define LOCOMOTIVE_14_28_A13 data[0],5
+#define LOCOMOTIVE_14_28_A12 data[0],4
+#define LOCOMOTIVE_14_28_A11 data[0],3
+#define LOCOMOTIVE_14_28_A10 data[0],2
+#define LOCOMOTIVE_14_28_A9 data[0],1
+#define LOCOMOTIVE_14_28_A8 data[0],0
+
+#define LOCOMOTIVE_14_28_A7 data[1],7
+#define LOCOMOTIVE_14_28_A6 data[1],6
+#define LOCOMOTIVE_14_28_A5 data[1],5
+#define LOCOMOTIVE_14_28_A4 data[1],4
+#define LOCOMOTIVE_14_28_A3 data[1],3
+#define LOCOMOTIVE_14_28_A2 data[1],2
+#define LOCOMOTIVE_14_28_A1 data[1],1
+#define LOCOMOTIVE_14_28_A0 data[1],0
+
+#define LOCOMOTIVE_14_28_RANGE0 data[2],7
+#define LOCOMOTIVE_14_28_RANGE1 data[2],6
+#define LOCOMOTIVE_14_28_D data[2],5
+#define LOCOMOTIVE_14_28_V0 data[2],4
+#define LOCOMOTIVE_14_28_V4 data[2],3
+#define LOCOMOTIVE_14_28_V3 data[2],2
+#define LOCOMOTIVE_14_28_V2 data[2],1
+#define LOCOMOTIVE_14_28_V1 data[2],0
   	
