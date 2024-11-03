@@ -42,12 +42,12 @@ protected:
     int pin_to_read;
     int address;
     int data_readed;
-    char data[6];
+    unsigned char data[6];
 public:
     int read(void);
     void reset(void);
     char get_data(int index);
-    char* get_raw_data(void);
+    unsigned char* get_raw_data(void);
     bool check_address(int size);
     bool check_sum(int data_readed);
 	  void set_data(char value, int index);

@@ -64,7 +64,7 @@ int DCC::read() {
     return (LOCOMOTIVE_CODE_7);
   else if ((data[0] & TYPE_MASK) == LOCOMOTIVE_CODE_14 && check_address(14) && type == LOCOMOTIVE_TYPE)
     return (LOCOMOTIVE_CODE_14);
-  return (ERROR);
+  return (ERROR_CHECKSUM);
 }
 
 void DCC::reset() {
@@ -81,7 +81,7 @@ char DCC::get_data(int index) {
   return this->data[index];
 }
 
-char* DCC::get_raw_data() {
+unsigned char* DCC::get_raw_data() {
   return this->data;
 }
 
@@ -109,11 +109,11 @@ bool DCC::check_address(int size) {
 		  buffer |= get_binary(data[0], cursor) << cursor;
 	  }
   } else if (size == 14) {
-	  for (int cursor = 0; cursor < 6; cursor++) {
-		  buffer |= get_binary(data[0], cursor) << cursor;
-	  }
 	  for (int cursor = 0; cursor < 8; cursor++) {
-		  buffer |= get_binary(data[1], 7 - cursor) << (cursor + 8);
+		  buffer |= get_binary(data[1], cursor) << cursor;
+	  }
+	  for (int cursor = 0; cursor < 6; cursor++) {
+		  buffer |= get_binary(data[0], cursor) << (cursor + 7);
 	  }
   }
 
